@@ -38,7 +38,17 @@ inquirer.prompt([
           choices: ["Manager", "Engineer", "Intern"]
       }
   ])
+}
 
+function promptManager() {
+  return inquirer.prompt([
+    {
+      type: "input",
+      name: "office",
+      message: "Office number: ",
+    }
+  ])
+}
 
 async function handleRole() {
     let selectedRole = await promptUser();
@@ -64,7 +74,7 @@ async function handleRole() {
       // Something else when wrong
     }
   });
-}
+
 
 
 
