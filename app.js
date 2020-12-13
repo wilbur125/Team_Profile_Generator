@@ -38,9 +38,25 @@ inquirer.prompt([
           choices: ["Manager", "Engineer", "Intern"]
       }
   ])
-  .then(answers => {
-    // Use user feedback for... whatever!!
-  })
+
+
+async function handleRole() {
+    let selectedRole = await promptUser();
+    switch (promptUser.role) {
+      case "Manager": 
+        let managerDetails = await promptManager();
+        return new Manager(promptUser.name, promptUser.id, promptUser.email, managerDetails.office);
+
+      case "Engineer":
+        let engineerDetails = await promptEngineer();
+        return new Engineer(promptUser.name, promptUser.id, promptUser.email, engineerDetails.github);
+
+      case "Intern":
+        let internDetails = await promptIntern();
+        return new Intern(promptUser.name, promptUser.id, promptUser.email, internDetails.school);
+    }
+} 
+
   .catch(error => {
     if(error.isTtyError) {
       // Prompt couldn't be rendered in the current environment
