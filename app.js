@@ -86,6 +86,11 @@ function promptIntern() {
     }
 } 
 
+async function addEmployee() {
+  const employee = await promptUser();
+  employees.push(employee);
+}
+
 function writeToFile(data) {
   fs.writeFile(
       outputPath,
@@ -98,10 +103,13 @@ function writeToFile(data) {
 }
 
 async function startSurvey() {
-       await promptUser();
-       await handleRole();
+  try { 
+      await addEmployee();
       const html = render(employees);
       writeToFile(html);
-}
+  }   catch (err) {
+    console.log(err)
+  }
+};
 
 startSurvey();
