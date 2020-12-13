@@ -45,7 +45,27 @@ function promptManager() {
     {
       type: "input",
       name: "office",
-      message: "Office number: ",
+      message: "Office number: "
+    }
+  ])
+}
+
+function promptEngineer() {
+  return inquirer.prompt([
+    {
+      type: "input",
+      name: "github",
+      message: "GitHub: "
+    }
+  ])
+}
+
+function promptIntern() {
+  return inquirer.prompt([
+    {
+      type: "input",
+      name: "school",
+      message: "School: "
     }
   ])
 }
