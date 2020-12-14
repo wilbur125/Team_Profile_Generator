@@ -5,111 +5,95 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+//NEED FUNCTION TO WRITE FILE TO PUT INTO THE OUTPUT FOLDER
+//REQUIRES PATH AND FS, BUT ATTEMPS HAVE RESULTED IN EMPLOYEES ARRAY BEING UNDEFINED
 
-const render = require("./lib/htmlRenderer");
+// const OUTPUT_DIR = path.resolve(__dirname, "output");
+// const outputPath = path.join(OUTPUT_DIR, "team.html");
 
+// const render = require("./lib/htmlRenderer");
 
 const employees = [];
 
 function promptUser() {
-inquirer.prompt([
-        {
-          type: "input",
-          name: "name",
-          message: "Name:"
-      },
-      {
-          type: "input",
-          name: "id",
-          message: "ID:"
-      },
-      {
-          type: "input",
-          name: "email",
-          message: "Email:"
-      },
-      {
-          type: "list",
-          name: "role",
-          message: "Employee type:",
-          choices: ["Manager", "Engineer", "Intern"]
-      }
-  ])
-}
-
-function promptManager() {
-  return inquirer.prompt([
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "Name:"
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "ID:"
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "Email:"
+    },
+    {
+      type: "list",
+      name: "role",
+      message: "Employee type:",
+      choices: ["Manager", "Engineer", "Intern"]
+    },
     {
       type: "input",
       name: "office",
       message: "Office number: "
-    }
-  ])
-}
-
-function promptEngineer() {
-  return inquirer.prompt([
+    },
     {
       type: "input",
       name: "github",
       message: "GitHub: "
-    }
-  ])
-}
-
-function promptIntern() {
-  return inquirer.prompt([
+    },
     {
       type: "input",
       name: "school",
       message: "School: "
     }
   ])
-}
-
- function handleRole() {
-    let selectedRole = promptUser();
-    switch (selectedRole.role) {
+  .then(answers => {
+  
+    switch (answers.role) {
       case "Manager": 
-        let managerDetails = promptManager();
-        return new Manager(selectedRole.name, selectedRole.id, selectedRole.email, managerDetails.office);
+        console.log("OFFICE NAME", answers.office);
+        return new Manager(answers.name, answers.id, answers.email, answers.office);
 
       case "Engineer":
-        let engineerDetails = promptEngineer();
-        return new Engineer(selectedRole.name, selectedRole.id, selectedRole.email, engineerDetails.github);
+        console.log("GITHUB NAME", answers.github);
+        return new Engineer(answers.name, answers.id, answers.email, answers.github);
 
       case "Intern":
-        let internDetails = promptIntern();
-        return new Intern(selectedRole.name, selectedRole.id, selectedRole.email, internDetails.school);
+        console.log("SCHOOL NAME", answers.school);
+        return new Intern(answers.name, answers.id, answers.email, answers.school);
     }
-} 
-
-async function addEmployee() {
-  const employee = await promptUser();
-  employees.push(employee);
+  })
 }
 
-function writeToFile(data) {
-  fs.writeFile(
-      outputPath,
-      data,
-      (err) => {
-          if (err) throw err;
-          console.log("New HTML saved to Output folder");
-      }
-  );
+function addEmployees() {
+  const employee = promptUser();
+      employees.push(employee);
+      return employees;
 }
 
-async function startSurvey() {
-  try { 
-      await addEmployee();
-      const html = render(employees);
-      writeToFile(html);
-  }   catch (err) {
-    console.log(err)
-  }
-};
+// function writeToFile(data) {
+//   fs.writeFile(
+//       outputPath,
+//       data,
+//       (err) => {
+//           if (err) throw err;
+//           console.log("File has been saved!");
+//       }
+//   );
+// }
 
-startSurvey();
+function run() {
+      addEmployees()
+      // const html = render();
+      // writeToFile(html);
+}
+
+run();
+
